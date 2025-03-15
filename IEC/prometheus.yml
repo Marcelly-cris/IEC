@@ -1,0 +1,16 @@
+alerting:
+  alertmanagers:
+    - static_configs:
+        - targets: ['localhost:9093']
+
+rule_files:
+  - "alert.rules"
+
+alert_rules:
+- alert: HighErrorRate
+  expr: rate(http_requests_total{status="500"}[5m]) > 0.1
+  for: 5m
+  labels:
+    severity: critical
+  annotations:
+    description: "Há uma taxa elevada de erros 500."
